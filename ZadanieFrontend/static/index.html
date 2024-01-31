@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <link rel="stylesheet" href="./index.css">
+</head>
+<body>
+<h1>Zadanie Backend B</h1>
+<br/>
+<p>
+    <h2>Contact Form</h2>
+    <form action="/form" method="post" id="MyForm" onsubmit="return validateForm()">
+        <fieldset>
+            <label>
+                Email: <input id="inputEmail" type="email" name="email" >
+            </label>
+            <br/>
+            <label>
+                Phone: <input id="inputPhone" type="tel" pattern="^\d{3} \d{3} \d{3}$" name="phone" placeholder="111 555 888" >
+            </label>
+            <br/>
+            <br/>
+            <label>
+                Age: <input id="inputAge" min="1" type="number" name="age" >
+            </label>
+            <br/>
+            <label>
+                Should we call you?:
+                <input id="inputShouldCall" type="checkbox" name="shouldCall" checked>
+            </label>
+        </fieldset>
+    <button type="submit"> Submit </button>
+    </form>
+    <div>
+        <p id="email"></p>
+        <p id="phone"></p>
+        <p id="age"></p>
+        <p id="shouldCall"></p>
+    </div>
+</p>
+<script>
+    function validateForm(){
+        const form = document.forms["MyForm"]
+        if(!/^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,})$/.test(form.email.value.trim())){
+            alert("Is not valid email")
+            return false
+        }
+        if(parseInt(form.age.value) < 18){
+            alert("You are under 18")
+            return false
+        }
+
+        return true
+    }
+
+    function insertText(id){
+        return (event) => {
+            const element = document.getElementById(id)
+            element.textContent = event.target.value
+        }
+    }
+
+    function insertCheckbox(id){
+        return (event) => {
+            const element = document.getElementById(id)
+            element.textContent = event.target.checked
+        }
+    }
+
+    document.getElementById("inputEmail").addEventListener("change", insertText("email"))
+    document.getElementById("inputPhone").addEventListener("change", insertText("phone"))
+    document.getElementById("inputAge").addEventListener("change", insertText("age"))
+    document.getElementById("inputShouldCall").addEventListener("change", insertCheckbox("shouldCall"))
+
+</script>
+    </body>
+    </html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <link rel="stylesheet" href="./index.css">
+</head>
+<body>
+<h1>Zadanie Backend B</h1>
+<br/>
+<p>
+    <h2>Contact Form</h2>
+    <form action="/form" method="post">
+        <fieldset>
+            <label>
+                Email: <input type="email" name="email">
+            </label>
+            <br/>
+            <label>
+                Phone: <input type="tel" pattern="^\d{3} \d{3} \d{3}$" name="phone" placeholder="111 555 888">
+            </label>
+            <br/>
+            <br/>
+            <label>
+                Age: <input min="1" type="number" pattern="^\d{3}$" name="age">
+            </label>
+            <br/>
+            <label>
+                Should we call you?:
+                <input type="checkbox" name="shouldCall" checked>
+            </label>
+        </fieldset>
+    <button type="submit"> Submit </button>
+    </form>
+</p>
+</body>
+</html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <link rel="stylesheet" href="./index.css">
+</head>
+<body>
+<h1>Zadanie Backend B</h1>
+<br/>
+<p>
+<h2>Contact Form</h2>
+<form action="/form" method="post" id="MyForm">
+    <fieldset>
+        <label>
+            Email: <input id="inputEmail" type="email" name="email">
+        </label>
+        <br/>
+        <label>
+            Phone: <input id="inputPhone" type="tel" pattern="^\d{3} \d{3} \d{3}$" name="phone"
+                          placeholder="111 555 888">
+        </label>
+        <br/>
+        <br/>
+        <label>
+            Age: <input id="inputAge" min="1" type="number" name="age">
+        </label>
+        <br/>
+        <label>
+            Should we call you?:
+            <input id="inputShouldCall" type="checkbox" name="shouldCall" checked>
+        </label>
+    </fieldset>
+    <button type="submit"> Submit</button>
+</form>
+<div>
+    <p id="email"></p>
+    <p id="phone"></p>
+    <p id="age"></p>
+    <p id="shouldCall"></p>
+</div>
+</p>
+<p>
+<h2>Async Get</h2>
+<div id="asyncGet"></div>
+</p>
+<script>
+    function validateForm() {
+        const form = document.forms["MyForm"]
+        if (!/^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,})$/.test(form.email.value.trim())) {
+            alert("Is not valid email")
+            return false
+        }
+        if (parseInt(form.age.value) < 18) {
+            alert("You are under 18")
+            return false
+        }
+
+        return true
+    }
+
+    function insertText(id) {
+        return (event) => {
+            const element = document.getElementById(id)
+            element.textContent = event.target.value
+        }
+    }
+
+    function insertCheckbox(id) {
+        return (event) => {
+            const element = document.getElementById(id)
+            element.textContent = event.target.checked
+        }
+    }
+
+    document.getElementById("inputEmail").addEventListener("change", insertText("email"))
+    document.getElementById("inputPhone").addEventListener("change", insertText("phone"))
+    document.getElementById("inputAge").addEventListener("change", insertText("age"))
+    document.getElementById("inputShouldCall").addEventListener("change", insertCheckbox("shouldCall"))
+
+    setInterval(async () => {
+        const response = await fetch("/asyncGet")
+        const randomData = await response.json()
+
+        document.getElementById("asyncGet").textContent = randomData.email
+    }, 10000)
+
+    document.getElementById("MyForm").addEventListener("submit", async (event) => {
+        event.preventDefault()
+        const isValid = validateForm()
+        if (!isValid) {
+            return
+        }
+
+        const response = await fetch("/form", {
+            method: "POST", body: JSON.stringify({
+                email: document.getElementById("inputEmail").value,
+                phone: document.getElementById("inputPhone").value,
+                age: document.getElementById("inputAge").value,
+                shuldCall: document.getElementById("inputShouldCall").value,
+            }),
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+        const result = await response.json()
+        alert(JSON.stringify(result))
+
+    })
+
+</script>
+</body>
+</html>
